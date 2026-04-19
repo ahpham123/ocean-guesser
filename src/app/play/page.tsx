@@ -10,11 +10,20 @@ import GuessMap from '@/components/game/GuessMap'
 import ScoreDisplay from '@/components/game/ScoreDisplay'
 import RoundTimer from '@/components/game/RoundTimer'
 import { Location, Mode, Round } from '@/types'
+import { Suspense } from 'react'
 
 const TOTAL_ROUNDS = 5
 const ROUND_DURATION = 60
 
 export default function PlayPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-950" />}>
+      <PlayContent />
+    </Suspense>
+  )
+}
+
+function PlayContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const mode = (searchParams.get('mode') ?? 'easy') as Mode

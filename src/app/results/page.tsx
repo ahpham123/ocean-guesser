@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Mode } from '@/types'
 import confetti from 'canvas-confetti'
+import { Suspense } from 'react'
 
 type ScoreEntry = {
   id: string
@@ -104,6 +105,14 @@ function fireConfetti() {
 }
 
 export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-950" />}>
+      <ResultsContent />
+    </Suspense>
+  )
+}
+
+function ResultsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const score = parseInt(searchParams.get('score') ?? '0')
