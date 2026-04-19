@@ -175,28 +175,28 @@ export default function Home() {
 
       {/* Content */}
       <div className="mb-12 text-center">
-        <h1 className="text-6xl font-bold tracking-tight mb-3">🌊 OceanGuesser</h1>
+        <h1 className="text-6xl font-bold tracking-tight mb-3"><span className='text-blue-300'>Ocean</span>Guesser</h1>
         <p className="text-slate-400 text-lg">How well do you know the world's oceans?</p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => router.push('/play?mode=easy')}
-          className="px-10 py-5 rounded-2xl bg-teal-500 hover:bg-teal-400 transition-colors text-white text-center"
+          className="px-10 py-5 rounded-2xl bg-[#509AA1] hover:bg-[#3C777C] transition-all hover:-translate-y-2 duration-300 text-white text-center cursor-pointer"
         >
           <p className="text-2xl font-bold">Easy</p>
           <p className="text-teal-100 text-sm mt-1">Coastal shorelines</p>
         </button>
         <button
           onClick={() => router.push('/play?mode=hard')}
-          className="px-10 py-5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-center"
+          className="px-10 py-5 rounded-2xl bg-[#4039aa] hover:bg-[#322c84] transition-all hover:-translate-y-2 text-white text-center cursor-pointer"
         >
           <p className="text-2xl font-bold">Hard</p>
-          <p className="text-indigo-200 text-sm mt-1">Open ocean satellite</p>
+          <p className="text-indigo-200 text-sm mt-1">A challenge awaits...</p>
         </button>
       </div>
 
-      <p className="mt-16 text-slate-600 text-sm">5 rounds · guess the location · submit your score</p>
+      <p className="mt-16 text-slate-400 text-sm">5 rounds | guess the location | submit your score</p>
     </main>
   )
 }
