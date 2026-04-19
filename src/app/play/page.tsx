@@ -193,7 +193,7 @@ export default function PlayPage() {
           ) : (
             <button
               onClick={handleNextRound}
-              className="w-full py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shrink-0"
+              className="w-full py-3 rounded-xl font-bold text-white bg-[#2f2bd4] hover:bg-[#5855dd] transition-colors shrink-0"
             >
               {currentRound + 1 >= TOTAL_ROUNDS ? 'See Results →' : 'Next Round →'}
             </button>

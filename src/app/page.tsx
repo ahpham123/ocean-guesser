@@ -196,7 +196,7 @@ export default function Home() {
         </button>
       </div>
 
-      <p className="mt-16 text-slate-400 text-sm">5 rounds | guess the location | submit your score</p>
+      <p className="mt-16 text-slate-400 text-sm">5 rounds · guess the location · submit your score</p>
     </main>
   )
 }
