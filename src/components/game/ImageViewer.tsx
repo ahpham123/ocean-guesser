@@ -70,24 +70,28 @@ export default function ImageViewer({ location, onInvalid }: Props) {
             return
           }
 
-          panoramaRef.current = new window.google.maps.StreetViewPanorama(
-            containerRef.current!,
-            {
-              pano: data.location.pano,
-              pov: { heading: location.heading ?? 0, pitch: 0 },
-              zoom: 0,
-              addressControl: false,
-              showRoadLabels: false,
-              motionTracking: false,
-              motionTrackingControl: false,
-              fullscreenControl: false,
-              linksControl: false,   // hides navigation arrows so players can't move
-              panControl: true,
-              zoomControl: true,
-            }
-          )
+          setTimeout(() => {
+            if (!containerRef.current) return
 
-          setLoading(false)
+            panoramaRef.current = new window.google.maps.StreetViewPanorama(
+              containerRef.current,
+              {
+                pano: data.location.pano,
+                pov: { heading: location.heading ?? 0, pitch: 0 },
+                zoom: 0,
+                addressControl: false,
+                showRoadLabels: false,
+                motionTracking: false,
+                motionTrackingControl: false,
+                fullscreenControl: false,
+                linksControl: false,
+                panControl: true,
+                zoomControl: true,
+              }
+            )
+
+            setLoading(false)
+          }, 200)
         }
       )
     })

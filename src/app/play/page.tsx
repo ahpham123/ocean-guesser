@@ -20,14 +20,13 @@ export default function PlayPage() {
   const mode = (searchParams.get('mode') ?? 'easy') as Mode
 
   const [locations, setLocations] = useState<Location[]>([])
-  const [usedIds, setUsedIds] = useState<Set<string>>(new Set())
+  const [pool, setPool] = useState<Location[]>([])   // remaining unused locations
   const [rounds, setRounds] = useState<Round[]>([])
   const [currentRound, setCurrentRound] = useState(0)
   const [guess, setGuess] = useState<{ lat: number; lng: number } | null>(null)
   const [submitted, setSubmitted] = useState(false)
   const [roundResult, setRoundResult] = useState<{ score: number; distanceKm: number } | null>(null)
   const [loading, setLoading] = useState(true)
-  const [allLocations, setAllLocations] = useState<Location[]>([])
 
   useEffect(() => {
     async function fetchLocations() {
@@ -42,28 +41,30 @@ export default function PlayPage() {
         return
       }
 
-      const shuffled = data.sort(() => Math.random() - 0.5)
-      setAllLocations(shuffled)
+      // Shuffle entire pool once
+      const shuffled = [...data].sort(() => Math.random() - 0.5)
 
-      const initial = shuffled.slice(0, TOTAL_ROUNDS)
-      setLocations(initial)
-      setUsedIds(new Set(initial.map((l) => l.id)))
+      // First 5 are the active game locations
+      const active = shuffled.slice(0, TOTAL_ROUNDS)
+
+      // Everything else is the fallback pool for replacements
+      const remaining = shuffled.slice(TOTAL_ROUNDS)
+
+      setLocations(active)
+      setPool(remaining)
       setLoading(false)
     }
 
     fetchLocations()
   }, [mode])
 
-  // Called by ImageViewer when a location has no valid image
-  async function handleLocationInvalid(badId: string) {
-    const replacement = allLocations.find((l) => !usedIds.has(l.id))
+  function handleLocationInvalid(badId: string) {
+    // No replacements left — nothing to do, ImageViewer shows error state
+    if (pool.length === 0) return
 
-    if (!replacement) {
-      // No replacements left — skip silently, ImageViewer shows error state
-      return
-    }
+    const [replacement, ...remainingPool] = pool
 
-    setUsedIds((prev) => new Set([...prev, replacement.id]))
+    setPool(remainingPool)
     setLocations((prev) =>
       prev.map((l) => (l.id === badId ? replacement : l))
     )
@@ -79,6 +80,8 @@ export default function PlayPage() {
 
     const location = locations[currentRound]
     const distanceKm = haversineKm(guess.lat, guess.lng, location.lat, location.lng)
+    console.log(location.lat)
+    console.log(location.lng)
     const score = calculateScore(distanceKm)
 
     setRounds((prev) => [...prev, { location, guessLat: guess.lat, guessLng: guess.lng, distanceKm, score }])

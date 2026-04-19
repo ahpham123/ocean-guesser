@@ -1,3 +1,4 @@
+// src/types/index.ts
 export type Mode = 'easy' | 'hard'
 
 export type Location = {
@@ -7,6 +8,7 @@ export type Location = {
   ocean: string
   mode: Mode
   heading: number
+  image_filename?: string    // hard mode only
 }
 
 export type Round = {
