@@ -133,7 +133,7 @@ export default function PlayPage() {
   return (
     <div className="h-screen bg-slate-950 text-white flex flex-col overflow-hidden">
       <div className="flex items-center justify-between px-6 py-3 border-b border-slate-800 shrink-0">
-        <button onClick={() => router.push('/')} className="bg-red-600 py-1 px-4 rounded-lg text-white hover:bg-red-500 cursor-pointer hover:scale-105 text-sm transition-all">
+        <button onClick={() => router.push('/')} className="bg-red-600 py-1 px-4 rounded-lg text-white hover:bg-red-500 text-sm transition-all">
           ← Quit
         </button>
         <div className="flex items-center gap-2 text-sm text-slate-400">

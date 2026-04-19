@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Mode } from '@/types'
+import confetti from 'canvas-confetti'
 
 type ScoreEntry = {
   id: string
@@ -12,6 +13,94 @@ type ScoreEntry = {
   score: number
   mode: string
   created_at: string
+}
+
+function getScoreMessage(score: number, mode: Mode): { title: string } {
+  if (mode === 'easy') {
+    if (score >= 20000) return {
+      title: "Rainbolt?! 🤯",
+    }
+    if (score >= 15000) return {
+      title: "GOAT behavior?",
+    }
+    if (score >= 10000) return {
+      title: "Great job!",
+    }
+    if (score >= 4000) return {
+      title: "Good work.",
+    }
+    return {
+      title: "",
+    }
+  }
+
+  // Hard mode
+  if (score >= 2000) return {
+    title: "Great job!"
+  }
+  return {
+    title: "",
+  }
+}
+
+function shouldShowConfetti(score: number, mode: Mode): boolean {
+  if (mode === 'easy') return score >= 10000
+  return score >= 2000
+}
+
+function fireConfetti() {
+  const positions = [
+    { x: 0.05, y: 0.25 },
+    { x: 0.10, y: 0.55 },
+    { x: 0.15, y: 0.35 },
+    { x: 0.20, y: 0.70 },
+    { x: 0.25, y: 0.45 },
+    { x: 0.30, y: 0.25 },
+    { x: 0.35, y: 0.60 },
+    { x: 0.40, y: 0.75 },
+    { x: 0.45, y: 0.30 },
+    { x: 0.50, y: 0.50 },
+    { x: 0.55, y: 0.65 },
+    { x: 0.60, y: 0.22 },
+    { x: 0.65, y: 0.40 },
+    { x: 0.70, y: 0.72 },
+    { x: 0.75, y: 0.35 },
+    { x: 0.80, y: 0.55 },
+    { x: 0.85, y: 0.28 },
+    { x: 0.90, y: 0.68 },
+    { x: 0.95, y: 0.42 },
+    { x: 0.50, y: 0.78 },
+    { x: 0.05, y: 0.85 },
+    { x: 0.10, y: 0.90 },
+    { x: 0.15, y: 0.87 },
+    { x: 0.20, y: 0.92 },
+    { x: 0.25, y: 0.86 },
+    { x: 0.30, y: 0.91 },
+    { x: 0.35, y: 0.88 },
+    { x: 0.40, y: 0.93 },
+    { x: 0.45, y: 0.85 },
+    { x: 0.50, y: 0.89 },
+    { x: 0.55, y: 0.87 },
+    { x: 0.60, y: 0.92 },
+    { x: 0.65, y: 0.86 },
+    { x: 0.70, y: 0.90 },
+    { x: 0.75, y: 0.88 },
+    { x: 0.80, y: 0.93 },
+    { x: 0.85, y: 0.85 },
+    { x: 0.90, y: 0.91 },
+    { x: 0.95, y: 0.87 },
+    { x: 0.50, y: 0.95 },
+  ]
+
+  positions.forEach(({ x, y }) => {
+    confetti({
+      particleCount: 40,
+      angle: 90,
+      spread: 60,
+      origin: { x, y },
+      colors: ['#14b8a6', '#6366f1', '#f59e0b', '#f43f5e', '#ffffff'],
+    })
+  })
 }
 
 export default function ResultsPage() {
@@ -25,6 +114,23 @@ export default function ResultsPage() {
   const [submitting, setSubmitting] = useState(false)
   const [leaderboard, setLeaderboard] = useState<ScoreEntry[]>([])
   const [playerRank, setPlayerRank] = useState<number | null>(null)
+
+  useEffect(() => {
+  if (!shouldShowConfetti(score, mode)) return
+
+  // Small delay so the page renders first
+  const timeout = setTimeout(() => {
+    fireConfetti()
+
+    // Extra burst for perfect/near-perfect scores
+    if ((mode === 'easy' && score >= 20000) || (mode === 'hard' && score >= 2000)) {
+      setTimeout(fireConfetti, 600)
+      setTimeout(fireConfetti, 1200)
+    }
+  }, 300)
+
+  return () => clearTimeout(timeout)
+}, [])
 
   useEffect(() => {
     fetchLeaderboard()
@@ -76,6 +182,14 @@ export default function ResultsPage() {
 
         {/* Score card */}
         <div className="bg-slate-900 rounded-2xl p-8 text-center border border-slate-800">
+          {(() => {
+            const { title } = getScoreMessage(score, mode)
+            return (
+              <>
+                <p className="text-2xl font-bold text-white mb-1">{title}</p>
+              </>
+            )
+          })()}
           <p className="text-slate-400 text-sm uppercase tracking-widest mb-2">Your Score</p>
           <p className="text-6xl font-bold text-teal-400 mb-1">{score.toLocaleString()}</p>
           <p className="text-slate-500 text-sm capitalize">{mode} mode · 5 rounds</p>
@@ -162,7 +276,7 @@ export default function ResultsPage() {
         <div className="flex gap-3">
           <button
             onClick={() => router.push(`/play?mode=${mode}`)}
-            className="flex-1 py-3 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 transition-colors"
+            className="flex-1 py-3 rounded-xl font-bold bg-[#2f2bd4] hover:bg-[#5855dd] transition-colors"
           >
             Play Again
           </button>
@@ -170,7 +284,7 @@ export default function ResultsPage() {
             onClick={() => router.push('/')}
             className="flex-1 py-3 rounded-xl font-bold bg-slate-800 hover:bg-slate-700 transition-colors"
           >
-            Change Mode
+            Return to Home
           </button>
         </div>
 
