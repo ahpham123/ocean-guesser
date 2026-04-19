@@ -182,14 +182,14 @@ export default function Home() {
       <div className="flex flex-col sm:flex-row gap-4">
         <button
           onClick={() => router.push('/play?mode=easy')}
-          className="px-10 py-5 rounded-2xl bg-[#509AA1] hover:bg-[#3C777C] transition-all hover:-translate-y-2 duration-300 text-white text-center cursor-pointer"
+          className="px-10 py-5 rounded-2xl bg-[#509AA1] hover:bg-[#3C777C] transition-all hover:scale-105 duration-300 text-white text-center cursor-pointer"
         >
           <p className="text-2xl font-bold">Easy</p>
           <p className="text-teal-100 text-sm mt-1">Coastal shorelines</p>
         </button>
         <button
           onClick={() => router.push('/play?mode=hard')}
-          className="px-10 py-5 rounded-2xl bg-[#4039aa] hover:bg-[#322c84] transition-all hover:-translate-y-2 text-white text-center cursor-pointer"
+          className="px-10 py-5 rounded-2xl bg-[#4039aa] hover:bg-[#322c84] transition-all hover:scale-105 text-white text-center cursor-pointer"
         >
           <p className="text-2xl font-bold">Hard</p>
           <p className="text-indigo-200 text-sm mt-1">A challenge awaits...</p>
