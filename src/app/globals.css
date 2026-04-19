@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* globals.css */
+@keyframes wave {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
