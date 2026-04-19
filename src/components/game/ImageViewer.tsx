@@ -84,9 +84,6 @@ export default function ImageViewer({ location, onInvalid }: Props) {
         alt="Guess this location"
         className="w-full h-full object-cover"
       />
-      <div className="absolute top-3 right-3 bg-black/60 text-white text-xs px-3 py-1 rounded-full capitalize">
-        {location.ocean} Ocean
-      </div>
     </div>
   )
 }
