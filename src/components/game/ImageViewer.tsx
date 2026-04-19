@@ -103,7 +103,7 @@ export default function ImageViewer({ location, onInvalid }: Props) {
 
       panoramaRef.current = new window.google.maps.Map(containerRef.current, {
         center: { lat: location.lat, lng: location.lng },
-        zoom: 6,
+        zoom: 8,
         mapTypeId: 'satellite',
         disableDefaultUI: true,
         draggable: false,         // lock so players can't pan to find landmarks
@@ -123,7 +123,7 @@ export default function ImageViewer({ location, onInvalid }: Props) {
       </div>
     )
   }
-
+  
   return (
     <div className="relative w-full h-full rounded-xl overflow-hidden">
       {loading && (
